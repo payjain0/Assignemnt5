@@ -1,0 +1,24 @@
+{
+	"items": [
+		{
+			"type": "book",
+			"label": "java",
+			"author": "luis"
+		},
+		{
+			"type": "CD",
+			"label": "mule",
+			"author": "victor"
+		},
+		{
+			"type": "book",
+			"label": "spring",
+			"author": "battler"
+		},
+		{
+			"type": "CD",
+			"label": "english",
+			"author": "The beatles"
+		}
+	]
+}

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="cf6dc6d0-e31f-429d-aeba-8c612cc94fdb" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="Map-and-flatten-joinBy-functionFlow-JSON" doc:id="efe3329c-1c5d-4dd8-8b47-6af90d4c8572" >
+		<http:listener doc:name="Listener" doc:id="9574cc01-485d-488c-87ed-a0438fc82412" config-ref="HTTP_Listener_config" path="/books" allowedMethods="POST"/>
+		<ee:transform doc:name="Transform Message" doc:id="231cb33c-15ec-4776-8973-864dd2da49d2" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+patents:payload.items map 
+{
+	owner :$.author replace  "victor" with "racto",
+	categories :upper($.typeOf),
+	label : flatten($.label) joinBy "-"
+}
+
+]]></ee:set-payload>
+			</ee:message>
+			<ee:variables >
+			</ee:variables>
+		</ee:transform>
+	</flow>
+	<flow name="dateFormat-and-dateTime-custom-funcFlow-CSV" doc:id="7d6a0f92-988e-4544-a3aa-0aee9a183bf9" >
+		<http:listener doc:name="Listener" doc:id="b445783c-dd73-4bd3-9775-e87a529a2bce" config-ref="HTTP_Listener_config" path="/test"/>
+		<ee:transform doc:name="Transform Message" doc:id="e287a5fb-675b-4649-a447-06e99eb2adb4" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/csv
+
+var current="2020-03-31 12:35:55"
+var tommorow="2020-04-01"
+
+fun customAddFun(inputData1,inputData2)=
+	inputData1+inputData2
+---
+{
+	"nowCalled": now().year,
+	"localDateTime" : current as LocalDateTime {format : "yyyy-MM-dd HH:mm:ss"},
+	"TommorowDate" : tommorow as Date { format : "yyyy-MM-dd"},
+	"addition": customAddFun(2,3)
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="MapObjectFuncFlow-XML" doc:id="cf9bfacc-e0d9-48ac-8dc4-50ebef8fc4a3" >
+		<http:listener doc:name="Listener" doc:id="f53df04d-393a-404e-b098-1422008b5b63" config-ref="HTTP_Listener_config" path="/populationData" allowedMethods="POST"/>
+		<ee:transform doc:name="Transform Message" doc:id="99cc07c2-6b94-4edf-a03e-950f242015e6" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+---
+"node":payload mapObject{
+	'$$':{
+		name:$$,
+		livingPonts:$.indexpoints,
+		tier:$.level
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

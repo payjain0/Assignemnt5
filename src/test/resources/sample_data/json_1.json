@@ -1,0 +1,14 @@
+{
+	"hyderabad": {
+		"population": "9 millions",
+		"state": "Telangana",
+		"level": "1",
+		"indexpoints": "8"
+	},
+	"bhuvneshwar": {
+		"population": "3 millions",
+		"state": "Orissa",
+		"level": "3",
+		"indexpoints": "5"
+	}
+}

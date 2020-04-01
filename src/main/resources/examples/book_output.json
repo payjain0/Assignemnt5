@@ -1,0 +1,20 @@
+{
+	"patents": [
+		{
+			"categories": "book",
+			"owner": "luis"
+		},
+		{
+			"categories": "CD",
+			"owner": "victor"
+		},
+		{
+			"categories": "book",
+			"owner": "battler"
+		},
+		{
+			"categories": "CD",
+			"owner": "The beatles"
+		}
+	]
+}
